@@ -105,10 +105,12 @@ case $1 in
 
 esac
 
+
+# kill -9 $(ps -ef|grep ry.sh|grep -v grep|awk '{print $2}')
 nohup
 while true
 do
-    limit_count_log $LOG_PATH 500
-    sleep 180
+    limit_count_log $LOG_PATH 100000
+    sleep 1800
     echo "======================="
 done > myfile.out 2>&1 &
