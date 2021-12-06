@@ -26,7 +26,7 @@ function start()
 	if [ x"$PID" != x"" ]; then
 	    echo "$AppName is running..."
 	else
-		nohup java -jar  $JVM_OPTS ruoyi-admin/target/$AppName > log.log 2>&1 &
+		nohup java -jar  $JVM_OPTS ruoyi-admin/target/$AppName > $LOG_PATH 2>&1 &
 		echo "Start $AppName success..."
 	fi
 }
@@ -72,6 +72,26 @@ function status()
     fi
 }
 
+# 控制日志行数，避免程序运行久了log文件过大
+limit_count_log(){
+    local logfile=$1
+    local maxline=$2
+    echo "$(/bin/date +%F_%T) 文件路径=$logfile"
+    echo "$(/bin/date +%F_%T) 允许的最大行数=$maxline"
+
+    if [ ! -f "$logfile" ]; then
+    sudo touch $logfile
+    fi
+    linecount=`/usr/bin/wc -l $logfile|awk '{print $1}'`;
+    echo  "$(/bin/date +%F_%T) 目标文件行数：$linecount"
+    if [ ${linecount} -gt ${maxline} ];then
+        sudo cp /dev/null $logfile
+        echo "$(/bin/date +%F_%T) 行数超过$maxline行清除成功"
+    else
+        echo "$(/bin/date +%F_%T) 行数未超过$maxline行"
+    fi
+}
+
 case $1 in
     start)
     start;;
@@ -84,3 +104,11 @@ case $1 in
     *)
 
 esac
+
+nohup
+while true
+do
+    limit_count_log $LOG_PATH 500
+    sleep 180
+    echo "======================="
+done > myfile.out 2>&1 &
