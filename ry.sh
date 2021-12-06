@@ -26,7 +26,7 @@ function start()
 	if [ x"$PID" != x"" ]; then
 	    echo "$AppName is running..."
 	else
-		nohup java -jar  $JVM_OPTS ruoyi-admin/target/$AppName > /dev/null 2>&1 &
+		nohup java -jar  $JVM_OPTS ruoyi-admin/target/$AppName > log.log 2>&1 &
 		echo "Start $AppName success..."
 	fi
 }
