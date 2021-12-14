@@ -26,6 +26,7 @@ function start()
 	if [ x"$PID" != x"" ]; then
 	    echo "$AppName is running..."
 	else
+	  #Jenkins使用processTreeKiller杀掉了所有子进程，而且这是Jenkins的默认行为。为了解决该问题，我们需要在启动前加上这句
 	  BUILD_ID=DONTKILLME
 		nohup java -jar  $JVM_OPTS ruoyi-admin/target/$AppName > $LOG_PATH 2>&1 &
 		echo "Start $AppName success..."
