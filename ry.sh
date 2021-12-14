@@ -26,6 +26,7 @@ function start()
 	if [ x"$PID" != x"" ]; then
 	    echo "$AppName is running..."
 	else
+	  BUILD_ID=DONTKILLME
 		nohup java -jar  $JVM_OPTS ruoyi-admin/target/$AppName > $LOG_PATH 2>&1 &
 		echo "Start $AppName success..."
 	fi
