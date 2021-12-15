@@ -69,6 +69,12 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # 需要密码就打开，不需要就注释掉，要不然报错连接不上redis
+    password: admin123456
+    database: 0
 
 # MyBatis
 mybatis:
