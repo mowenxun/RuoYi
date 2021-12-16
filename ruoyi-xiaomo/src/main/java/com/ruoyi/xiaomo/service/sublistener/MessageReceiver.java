@@ -27,13 +27,19 @@ public class MessageReceiver {
      * 接收消息的方法
      */
     public void oaUserLogin(String message) {
+        //"[{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"password\":\"距离100000码\",\"userId\":1000,\"userName\":\"yaner\"},{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},
+        // \"password\":\"距离100000码\",\"userId\":1001,\"userName\":\"xiaoting\"}]"
         logger.info("channel={};message={}", RedisSubListenerConfig.OA_USER_LOGIN, message);
         //切掉前后的双引号
         message = message.substring(message.indexOf("\"") + 1, message.lastIndexOf("\""));
         logger.info("message11=={}", message);
+        //[{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"password\":\"距离100000码\",\"userId\":1000,\"userName\":\"yaner\"},{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},
+        // \"password\":\"距离100000码\",\"userId\":1001,\"userName\":\"xiaoting\"}]
         //再替换掉反斜杠\,这样才是真正的字符串json格式
         message = message.replaceAll("\\\\", "");
         logger.info("message22=={}", message);
+        //[{"admin":false,"dept":{"params":{}},"params":{},"password":"距离100000码","userId":1000,"userName":"yaner"},{"admin":false,"dept":{"params":{}},"params":{},"password":"距离100000码",
+        // "userId":1001,"userName":"xiaoting"}]
         List<SysUser> list = JSONArray.parseArray(message, SysUser.class);
         list.forEach(item -> {
             logger.info(item.getUserName());
