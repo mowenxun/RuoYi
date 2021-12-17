@@ -15,6 +15,7 @@ import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -53,13 +54,15 @@ public class RedisConfig extends CachingConfigurerSupport {
         jacksonSeial.setObjectMapper(om);
 
         // 值采用json序列化
-        template.setValueSerializer(jacksonSeial);
+        // template.setValueSerializer(jacksonSeial);//有反斜杠
+        template.setValueSerializer(new StringRedisSerializer());//这样才没有反斜杠
         //使用StringRedisSerializer来序列化和反序列化redis的key值
         template.setKeySerializer(new StringRedisSerializer());
 
         // 设置hash key 和value序列化模式
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(jacksonSeial);
+        //template.setHashValueSerializer(jacksonSeial);//有反斜杠
+        template.setHashValueSerializer(new StringRedisSerializer());//这样才没有反斜杠
         template.afterPropertiesSet();
 
         return template;
