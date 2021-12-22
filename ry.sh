@@ -110,11 +110,12 @@ esac
 
 # kill -9 $(ps -ef|grep ry.sh|grep -v grep|awk '{print $2}')
 #Jenkins使用processTreeKiller杀掉了所有子进程，而且这是Jenkins的默认行为。为了解决该问题，我们需要在启动前加上这句
-BUILD_ID=DONTKILLME
+# 上面的jar包可以后台进程，这里就不行，进程比杀掉了，所以做不了轮询去删除日志；只能在jenkins里面添加这一行，保留ry.sh的进程
+# BUILD_ID=DONTKILLME
 nohup
 while true
 do
     limit_count_log $LOG_PATH 100000
-    sleep 180
+    sleep 1800
     echo "======================="
 done > myfile.out 2>&1 &
